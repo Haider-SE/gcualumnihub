@@ -14,10 +14,15 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Checkbox from "@mui/material/Checkbox";
 import CardMedia from "@mui/material/CardMedia";
+import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
 import { useNavigate } from "react-router-dom";
+import InputLabel from '@mui/material/InputLabel';
 import { useDispatch } from "react-redux";
 import logo from "../../../Logo/logoSign.png";
+import { authApi } from "../../../APIs/axios";
+import Select from "@mui/material/Select";
+import axios from "axios";
 function Copyright(props) {
   return (
     <Typography
@@ -38,33 +43,30 @@ const theme = createTheme();
 
 function Signup() {
   const [data, setData] = useState({
+    rollNo: "",
     password: "",
-    first_name: "",
-    last_name: "",
+    userName: "",
+    lastName: "",
     role: "",
-    is_alumni: "",
-    company_name: "",
-    designation: "",
-    email: "",
-    short_intro: "",
-    bio: "",
-    social_github: "",
-    social_linkedin: "",
-    social_twitter: "",
-    social_youtube: "",
-    social_website: "",
+    
   });
+  // isAlumni: "",
+    // companyName: "",
+    // designation: "",
+    // email: "",
+    // shortIntro: "",
+    // bio: "",
+    // socialGithub: "",
+    // socialLinkedin: "",
+    // socialTwitter: "",
+    // socialYoutube: "",
+    // socialWebsite: "",
   //   const navigate = useNavigate();
-  //   const handleSubmit = async (event) => {
-  //     Validation() && event.preventDefault();
-  //     authApi.post("registeralumni/", data).then((res) => {
-  //       dispatch(login(res.data.data));
-  //       localStorage.setItem("isLoggedIn", true);
-  //       localStorage.setItem("token", JSON.stringify(res.data.token));
-  //       localStorage.setItem("userData", JSON.stringify(res.data.data));
-  //       navigate("/");
-  //     });
-  //   };
+  const handleSubmit = async (event) => {
+    authApi.post("registeralumni/", data).then((res) => {
+      localStorage.setItem("userData", JSON.stringify(res.data.data));
+    });
+  };
 
   const Validation = () => {
     // if (data.roll_no.trim().length === 0 || data.password.trim().length === 0) {
@@ -140,29 +142,30 @@ function Signup() {
                     <Box component="form" noValidate sx={{ mt: 3 }}>
                       <Grid container spacing={2}>
                         <Grid item xs={4}>
-                          <TextField
-                            autoComplete="given-roll"
-                            name={data.role}
-                            required
-                            fullWidth
-                            id="roll_no"
+                          <Select
+                            labelId="demo-select-small"
+                            id="demo-select-small"
                             label="Role"
-                            autoFocus
+                            value={data.role}
                             onChange={(e) =>
                               setData({ ...data, role: e.target.value })
                             }
-                          />
+                          >
+                            <MenuItem value={"T"}>Teacher/Staff</MenuItem>
+                            <MenuItem value={"A"}>Alumni</MenuItem>
+                            <MenuItem value={"S"}>Student</MenuItem>
+                          </Select>
                         </Grid>
                         <Grid item xs={4}>
                           <TextField
                             required
                             fullWidth
-                            name="first_name"
+                            name="firstName"
                             label="First Name"
-                            id="first_name"
-                            value={data.first_name}
+                            id="firstName"
+                            value={data.firstName}
                             onChange={(e) =>
-                              setData({ ...data, first_name: e.target.value })
+                              setData({ ...data, firstName: e.target.value })
                             }
                           />
                         </Grid>
@@ -170,12 +173,12 @@ function Signup() {
                           <TextField
                             required
                             fullWidth
-                            name="last_name"
+                            name="lastName"
                             label="Last Name"
-                            id="last_name"
-                            value={data.last_name}
+                            id="lastName"
+                            value={data.lastName}
                             onChange={(e) =>
-                              setData({ ...data, last_name: e.target.value })
+                              setData({ ...data, lastName: e.target.value })
                             }
                           />
                         </Grid>
@@ -186,21 +189,6 @@ function Signup() {
                         }}
                       />
                     </Grid> */}
-                        <Grid item xs={12}>
-                          <TextField
-                            required
-                            fullWidth
-                            id="bio"
-                            label="Bio"
-                            name="bio"
-                            multiline
-                            rows={4}
-                            value={data?.bio}
-                            onChange={(e) =>
-                              setData({ ...data, bio: e.target.value })
-                            }
-                          />
-                        </Grid>
                         <Grid item xs={12}>
                           <TextField
                             autoComplete="email"
@@ -215,17 +203,32 @@ function Signup() {
                             }
                           />
                         </Grid>
+                        {/* <Grid item xs={12}>
+                          <TextField
+                            required
+                            fullWidth
+                            id="bio"
+                            label="Bio"
+                            name="bio"
+                            multiline
+                            rows={4}
+                            value={data?.bio}
+                            onChange={(e) =>
+                              setData({ ...data, bio: e.target.value })
+                            }
+                          />
+                        </Grid>
                         <Grid item xs={6}>
                           <TextField
                             fullWidth
-                            name="social_github"
+                            name="socialGithub"
                             label="GitHub"
-                            id="social_github"
-                            value={data?.social_github}
+                            id="socialGithub"
+                            value={data?.socialGithub}
                             onChange={(e) =>
                               setData({
                                 ...data,
-                                social_github: e.target.value,
+                                socialGithub: e.target.value,
                               })
                             }
                           />
@@ -233,14 +236,14 @@ function Signup() {
                         <Grid item xs={6}>
                           <TextField
                             fullWidth
-                            name="social_linkedin"
+                            name="socialLinkedin"
                             label="LinkedIn"
-                            value={data?.social_linkedin}
-                            id="social_linkedin"
+                            value={data?.socialLinkedin}
+                            id="socialLinkedin"
                             onChange={(e) =>
                               setData({
                                 ...data,
-                                social_linkedin: e.target.value,
+                                socialLinkedin: e.target.value,
                               })
                             }
                           />
@@ -248,14 +251,14 @@ function Signup() {
                         <Grid item xs={6}>
                           <TextField
                             fullWidth
-                            name="social_twitter"
+                            name="socialTwitter"
                             label="Twitter"
-                            id="social_twitter"
-                            value={data?.social_twitter}
+                            id="socialTwitter"
+                            value={data?.socialTwitter}
                             onChange={(e) =>
                               setData({
                                 ...data,
-                                social_twitter: e.target.value,
+                                socialTwitter: e.target.value,
                               })
                             }
                           />
@@ -263,10 +266,10 @@ function Signup() {
                         <Grid item xs={6}>
                           <TextField
                             fullWidth
-                            name="social_website"
+                            name="socialWebsite"
                             label="Website"
-                            id="social_website"
-                            value={data?.social_website}
+                            id="socialWebsite"
+                            value={data?.socialWebsite}
                             onChange={(e) =>
                               setData({ ...data, bio: e.target.value })
                             }
@@ -276,12 +279,12 @@ function Signup() {
                         <Grid item xs={6}>
                           <TextField
                             fullWidth
-                            id="company_name"
+                            id="companyName"
                             label="Current Company"
-                            name="company_name"
-                            value={data?.company_name}
+                            name="companyName"
+                            value={data?.companyName}
                             onChange={(e) =>
-                              setData({ ...data, company_name: e.target.value })
+                              setData({ ...data, companyName: e.target.value })
                             }
                           />
                         </Grid>
@@ -296,7 +299,7 @@ function Signup() {
                               setData({ ...data, designation: e.target.value })
                             }
                           />
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={12}>
                           <TextField
                             required
@@ -320,7 +323,14 @@ function Signup() {
               </Grid> */}
                 </Grid>
 
-                <Button fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={() => {
+                    handleSubmit();
+                  }}
+                >
                   Sign Up
                 </Button>
 
